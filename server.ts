@@ -7,7 +7,6 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
-import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI, Type } from '@google/genai';
 
 // Initialize Express App
@@ -131,13 +130,23 @@ function getDB() {
       ],
       settings: DEFAULT_SETTINGS
     };
-    fs.writeFileSync(DB_FILE, JSON.stringify(initialDB, null, 2));
+    try {
+      fs.writeFileSync(DB_FILE, JSON.stringify(initialDB, null, 2));
+    } catch (e) {}
+    return initialDB;
   }
-  return JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
+  try {
+    return JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
+  } catch (err) {
+    // Prevent 500 error if file is being written concurrently
+    return { users: [], products: [], captions: [], socialPosts: [], socialAccounts: [], logs: [], settings: DEFAULT_SETTINGS };
+  }
 }
 
 function saveDB(data: any) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (e) {}
 }
 
 // Write System Log Helper
@@ -760,6 +769,7 @@ app.get('/api/logs', authenticateToken, (req, res) => {
 async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     // Inject Vite Dev Middleware
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
