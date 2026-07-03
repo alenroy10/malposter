@@ -17,7 +17,7 @@ const PORT = 3000;
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-const isVercel = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
+const isVercel = !!process.env.VERCEL || !!process.env.VERCEL_ENV || !!process.env.NOW_REGION;
 
 // Ensure uploads directory exists
 const UPLOADS_DIR = isVercel ? '/tmp/uploads' : path.join(process.cwd(), 'uploads');
