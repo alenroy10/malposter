@@ -1,0 +1,6 @@
+{
+  "name": "MalPoster - AI Malayalam Social Posting System",
+  "description": "An AI-powered system that transcribes Malayalam audio descriptions, extracts structured product information, generates optimized captions, and publishes to social media platforms.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
