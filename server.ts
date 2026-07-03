@@ -351,7 +351,8 @@ app.post('/api/transcribe', authenticateToken, async (req, res) => {
 
     // If audioUrl is provided, try to load the local file
     if (audioUrl && audioUrl.startsWith('/uploads/')) {
-      const filePath = path.join(process.cwd(), audioUrl);
+      const fileName = audioUrl.split('/').pop();
+      const filePath = path.join(UPLOADS_DIR, fileName || '');
       if (fs.existsSync(filePath)) {
         const fileBuffer = fs.readFileSync(filePath);
         finalBase64 = fileBuffer.toString('base64');

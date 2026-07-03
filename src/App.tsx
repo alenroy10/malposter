@@ -56,9 +56,9 @@ export default function App() {
   // Authentication & Session
   const [token, setToken] = useState<string | null>(localStorage.getItem('malposter_token'));
   const [user, setUser] = useState<{ id: string; name: string; email: string } | null>(null);
-  const [authEmail, setAuthEmail] = useState('alen.roy@lidexglobal.com');
-  const [authPassword, setAuthPassword] = useState('password123');
-  const [authName, setAuthName] = useState('Alen Roy');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authName, setAuthName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
 
